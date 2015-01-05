@@ -30,10 +30,10 @@ $wgHooks['ResourceLoaderGetConfigVars'][] = 'SentryHooks::onResourceLoaderGetCon
 $wgHooks['BeforePageDisplay'][] = 'SentryHooks::onBeforePageDisplay';
 
 /**
- * Sentry endpoint / API key
+ * Sentry DSN (http://raven.readthedocs.org/en/latest/config/#the-sentry-dsn
  * @var string
  */
-$wgSentryEndpoint = null;
+$wgSentryDsn = null;
 
 /**
  * List of domains to log error from.

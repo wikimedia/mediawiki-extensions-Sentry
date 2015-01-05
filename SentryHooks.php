@@ -6,10 +6,10 @@ class SentryHooks {
 	 * @return bool
 	 */
 	public static function onResourceLoaderGetConfigVars( &$vars ) {
-		global $wgSentryEndpoint, $wgSentryWhitelist, $wgSentryLogOnError;
+		global $wgSentryDsn, $wgSentryWhitelist, $wgSentryLogOnError;
 
 		$vars['wgSentry'] = array(
-			'endpoint' => $wgSentryEndpoint,
+			'dsn' => $wgSentryDsn,
 			'whitelist' => $wgSentryWhitelist,
 			'logOnError' => $wgSentryLogOnError,
 		);

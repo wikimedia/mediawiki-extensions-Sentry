@@ -18,5 +18,5 @@
 		language: mw.config.get( 'wgUserLanguage' )
 	};
 
-	Raven.config( config.endpoint, options ).install();
+	Raven.config( config.dsn, options ).install();
 } ) ( mediaWiki, Raven );
