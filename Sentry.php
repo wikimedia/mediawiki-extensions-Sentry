@@ -28,9 +28,10 @@ $wgResourceModules += array(
 
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'SentryHooks::onResourceLoaderGetConfigVars';
 $wgHooks['BeforePageDisplay'][] = 'SentryHooks::onBeforePageDisplay';
+$wgHooks['UnitTestsList'][] = 'SentryHooks::onUnitTestsList';
 
 /**
- * Sentry DSN (http://raven.readthedocs.org/en/latest/config/#the-sentry-dsn
+ * Sentry DSN (http://raven.readthedocs.org/en/latest/config/#the-sentry-dsn)
  * @var string
  */
 $wgSentryDsn = null;

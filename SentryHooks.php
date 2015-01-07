@@ -9,7 +9,7 @@ class SentryHooks {
 		global $wgSentryDsn, $wgSentryWhitelist, $wgSentryLogOnError;
 
 		$vars['wgSentry'] = array(
-			'dsn' => $wgSentryDsn,
+			'dsn' => self::getPublicDsnFromFullDsn( $wgSentryDsn ),
 			'whitelist' => $wgSentryWhitelist,
 			'logOnError' => $wgSentryLogOnError,
 		);
@@ -27,5 +27,24 @@ class SentryHooks {
 
 		return true;
 	}
-}
 
+	public static function onUnitTestsList( array &$paths ) {
+		$paths[] = __DIR__ . '/tests';
+	}
+
+	/**
+	 * For JS logging, the private key must be omitted from the DSN.
+	 * @param string $dsn
+	 * @return string
+	 */
+	protected static function getPublicDsnFromFullDsn( $dsn ) {
+		$slash_pos = strpos( $dsn, '//' );
+		$colon_pos = strpos( $dsn, ':', $slash_pos );
+		$at_pos = strpos( $dsn, '@' );
+		if ( $colon_pos < 1 || $at_pos < 1 || $colon_pos > $at_pos ) {
+			// something wrong - maybe $dsn is already public?
+			return $dsn;
+		}
+		return substr( $dsn, 0, $colon_pos ) . substr( $dsn, $at_pos );
+	}
+}
