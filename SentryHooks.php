@@ -32,6 +32,15 @@ class SentryHooks {
 		$paths[] = __DIR__ . '/tests';
 	}
 
+	public static function onResourceLoaderTestModules( array &$testModules, ResourceLoader &$resourceLoader ) {
+		$testModules['qunit']['sentry.test'] = array(
+			'scripts' => array( 'init.test.js' ),
+			'dependencies' => array( 'sentry' ),
+			'localBasePath' => __DIR__ . '/tests/qunit',
+			'remoteExtPath' => 'Sentry/tests/qunit',
+		);
+	}
+
 	/**
 	 * For JS logging, the private key must be omitted from the DSN.
 	 * @param string $dsn

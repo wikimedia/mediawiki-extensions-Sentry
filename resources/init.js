@@ -1,4 +1,4 @@
-( function ( mw ) {
+( function ( mw, $ ) {
 	var raven;
 
 	/**
@@ -38,18 +38,33 @@
 	 * @param {string} topic mw.track() queue name
 	 * @param {Object} data
 	 * @param {Mixed} data.exception The exception which has been caught
+	 * @param {string} data.id An identifier for the exception
 	 * @param {string} data.source Describes what type of function caught the exception
 	 * @param {string} [data.module] Name of the module which threw the exception
+	 * @param {Object} [data.context] Additional key-value pairs to be recorded as Sentry tags
 	 */
 	function report( topic, data ) {
-		initRaven().done( function ( raven ) {
-			raven.captureException( data.exception, { tags: {
-				source: data.source,
-				module: data.module
-			} } );
+		mw.sentry.initRaven().done( function ( raven ) {
+			var tags = { source: data.source },
+				log = window.console && ( console.warn || console.log );
+
+			if ( data.module ) {
+				tags.module = data.module;
+			}
+			$.extend( tags, data.context );
+
+			raven.captureException( data.exception, { tags: tags, event_id: data.id } );
+
+			if ( log ) {
+				log.call( console, 'MediaWiki error logging: reported an error with id ' + data.id );
+				log.call( console, 'Please refer to this error id when reporting an error.' );
+			}
 		} );
 	}
 
 	mw.trackSubscribe( 'errorLogging.exception', report );
 	mw.trackSubscribe( 'resourceloader.exception', report );
-} ) ( mediaWiki );
+
+	// make these available for unit tests
+	mw.sentry = { initRaven: initRaven, report: report };
+} ) ( mediaWiki, jQuery );
