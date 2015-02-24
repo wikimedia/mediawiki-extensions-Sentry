@@ -65,6 +65,12 @@
 	mw.trackSubscribe( 'errorLogging.exception', report );
 	mw.trackSubscribe( 'resourceloader.exception', report );
 
+	mw.trackSubscribe( 'eventlogging.error', function ( topic, error ) {
+		mw.sentry.initRaven().done( function ( raven ) {
+			raven.captureMessage( error, { source: 'EventLogging' } );
+		} );
+	} );
+
 	// make these available for unit tests
 	mw.sentry = { initRaven: initRaven, report: report };
 } ) ( mediaWiki, jQuery );
