@@ -26,6 +26,12 @@
 					language: mw.config.get( 'wgUserLanguage' )
 				};
 
+				// FIXME: https://github.com/getsentry/raven-js/issues/316
+				// There is no way to use Raven without installing it as the global error handler;
+				// and it will pass all errors to the previously registered error handler, which
+				// would cause duplicate reports.
+				window.onerror = undefined;
+
 				Raven.config( config.dsn, options ).install();
 
 				raven = Raven;
@@ -64,6 +70,14 @@
 
 	mw.trackSubscribe( 'errorLogging.exception', report );
 	mw.trackSubscribe( 'resourceloader.exception', report );
+
+	mw.trackSubscribe( 'errorLogging.windowOnerror', function ( topic, data ) {
+		mw.sentry.initRaven().done( function ( raven ) {
+			// By this point, Raven replaced the old window.onerror; we need to process errors
+			// caught before that which are queued in mw.track.
+			window.onerror.apply( null, data.args );
+		} );
+	} );
 
 	mw.trackSubscribe( 'eventlogging.error', function ( topic, error ) {
 		mw.sentry.initRaven().done( function ( raven ) {
