@@ -15,12 +15,13 @@ $wgMessagesDirs['Sentry'] = __DIR__ . '/i18n';
 $wgAutoloadClasses['SentryHooks'] = __DIR__ . '/SentryHooks.php';
 
 $wgResourceModules += array(
-	'sentry' => array(
-		'scripts' => array(
-			'raven/raven.js',
-			'init.js',
-		),
-		'position' => 'top',
+	'sentry.init' => array(
+		'scripts' => array( 'init.js' ),
+		'localBasePath' => __DIR__ . '/resources',
+		'remoteExtPath' => 'Sentry/resources',
+	),
+	'sentry.raven' => array(
+		'scripts' => array( 'raven/raven.js' ),
 		'localBasePath' => __DIR__ . '/resources',
 		'remoteExtPath' => 'Sentry/resources',
 	),

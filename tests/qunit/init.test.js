@@ -2,11 +2,13 @@
 	QUnit.module( 'sentry', QUnit.newMwEnvironment() );
 
 	QUnit.test( 'initRaven()', 6, function ( assert ) {
-		var result;
+		window.Raven = window.Raven || undefined; // sinon.js won't stub nonexistent properties
+		this.sandbox.stub( window, 'Raven', {
+			config: this.sandbox.stub().returnsThis(),
+			install: this.sandbox.stub().returnsThis()
+		} );
 
 		this.sandbox.stub( mw.loader, 'using' ).returns( $.Deferred().resolve() );
-		this.sandbox.stub( Raven, 'config' ).returnsThis();
-		this.sandbox.stub( Raven, 'install' ).returnsThis();
 
 		QUnit.stop();
 		mw.sentry.initRaven().then( function ( raven ) {
@@ -26,20 +28,19 @@
 		} );
 	} );
 
-	QUnit.test( 'report()', 5, function ( assert ) {
+	QUnit.test( 'report()', 4, function ( assert ) {
 		var raven = { captureException: this.sandbox.stub() };
 
 		this.sandbox.stub( mw.sentry, 'initRaven' ).returns( $.Deferred().resolve( raven ) );
 
-		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', id: '123' } );
+		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought' } );
 		assert.strictEqual( raven.captureException.lastCall.args[0], 42, 'Exception matches' );
-		assert.strictEqual( raven.captureException.lastCall.args[1].event_id, '123', 'Event id matches' );
 		assert.strictEqual( raven.captureException.lastCall.args[1].tags.source, 'Deep Thought', 'Source matches' );
 
-		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', module: 'foo', id: '123' } );
+		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', module: 'foo' } );
 		assert.strictEqual( raven.captureException.lastCall.args[1].tags.module, 'foo', 'Module matches' );
 
-		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', id: '123', context: { foo: 'bar' } } );
+		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', context: { foo: 'bar' } } );
 		assert.strictEqual( raven.captureException.lastCall.args[1].tags.foo, 'bar', 'Custom context matches' );
 	} );
 }( mediaWiki, jQuery ) );

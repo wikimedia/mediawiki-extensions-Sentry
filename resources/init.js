@@ -5,7 +5,7 @@
 	 * @return {jQuery.Deferred} a deferred with the Raven.js object
 	 */
 	function initRaven() {
-		return mw.loader.using( 'sentry' ).then( function () {
+		return mw.loader.using( 'sentry.raven' ).then( function () {
 			if ( !raven ) {
 				var config = mw.config.get( 'wgSentry' ),
 					options = {};
@@ -51,31 +51,28 @@
 	 */
 	function report( topic, data ) {
 		mw.sentry.initRaven().done( function ( raven ) {
-			var tags = { source: data.source },
-				log = window.console && ( console.warn || console.log );
+			var tags = { source: data.source };
 
 			if ( data.module ) {
 				tags.module = data.module;
 			}
 			$.extend( tags, data.context );
 
-			raven.captureException( data.exception, { tags: tags, event_id: data.id } );
-
-			if ( log ) {
-				log.call( console, 'MediaWiki error logging: reported an error with id ' + data.id );
-				log.call( console, 'Please refer to this error id when reporting an error.' );
-			}
+			raven.captureException( data.exception, { tags: tags } );
 		} );
 	}
 
-	mw.trackSubscribe( 'errorLogging.exception', report );
+	// make these available for unit tests
+	mw.sentry = { initRaven: initRaven, report: report };
+
 	mw.trackSubscribe( 'resourceloader.exception', report );
 
-	mw.trackSubscribe( 'errorLogging.windowOnerror', function ( topic, data ) {
+	mw.trackSubscribe( 'global.error', function ( topic, data ) {
 		mw.sentry.initRaven().done( function ( raven ) {
 			// By this point, Raven replaced the old window.onerror; we need to process errors
 			// caught before that which are queued in mw.track.
-			window.onerror.apply( null, data.args );
+			window.onerror.call( window, data.errorMessage, data.url, data.lineNumber, data.columnNumber,
+				data.errorObject );
 		} );
 	} );
 
@@ -84,7 +81,4 @@
 			raven.captureMessage( error, { source: 'EventLogging' } );
 		} );
 	} );
-
-	// make these available for unit tests
-	mw.sentry = { initRaven: initRaven, report: report };
 } ) ( mediaWiki, jQuery );
