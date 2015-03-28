@@ -1,12 +1,12 @@
 ( function ( mw, $ ) {
-	var raven;
+	var ravenPromise;
 
 	/**
 	 * @return {jQuery.Deferred} a deferred with the Raven.js object
 	 */
 	function initRaven() {
-		return mw.loader.using( 'sentry.raven' ).then( function () {
-			if ( !raven ) {
+		if ( !ravenPromise ) {
+			ravenPromise = mw.loader.using( 'sentry.raven' ).then( function () {
 				var config = mw.config.get( 'wgSentry' ),
 					options = {};
 
@@ -34,10 +34,10 @@
 
 				Raven.config( config.dsn, options ).install();
 
-				raven = Raven;
-			}
-			return raven;
-		} );
+				return Raven;
+			} );
+		}
+		return ravenPromise;
 	}
 
 	/**
