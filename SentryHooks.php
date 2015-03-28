@@ -23,7 +23,7 @@ class SentryHooks {
 	 * @return bool
 	 */
 	public static function onBeforePageDisplay( &$out, &$skin ) {
-		$out->addModules( array( 'sentry' ) );
+		$out->addModules( array( 'sentry.init' ) );
 
 		return true;
 	}
@@ -35,7 +35,7 @@ class SentryHooks {
 	public static function onResourceLoaderTestModules( array &$testModules, ResourceLoader &$resourceLoader ) {
 		$testModules['qunit']['sentry.test'] = array(
 			'scripts' => array( 'init.test.js' ),
-			'dependencies' => array( 'sentry' ),
+			'dependencies' => array( 'sentry.init' ),
 			'localBasePath' => __DIR__ . '/tests/qunit',
 			'remoteExtPath' => 'Sentry/tests/qunit',
 		);
