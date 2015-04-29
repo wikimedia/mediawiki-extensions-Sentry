@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Elisardojm"
+		]
+	},
+	"sentry-desc": "Integración con [https://getsentry.com/ Sentry]"
+}
