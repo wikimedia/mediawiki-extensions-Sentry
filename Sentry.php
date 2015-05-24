@@ -31,6 +31,8 @@ $wgHooks['ResourceLoaderGetConfigVars'][] = 'SentryHooks::onResourceLoaderGetCon
 $wgHooks['BeforePageDisplay'][] = 'SentryHooks::onBeforePageDisplay';
 $wgHooks['UnitTestsList'][] = 'SentryHooks::onUnitTestsList';
 $wgHooks['ResourceLoaderTestModules'][] = 'SentryHooks::onResourceLoaderTestModules';
+$wgHooks['LogException'][] = 'SentryHooks::onLogException';
+SentryHooks::onRegistration();
 
 /**
  * Sentry DSN (http://raven.readthedocs.org/en/latest/config/#the-sentry-dsn)
@@ -51,4 +53,10 @@ $wgSentryWhitelist = false;
  * @var bool
  */
 $wgSentryLogOnError = true;
+
+/**
+ * Log PHP errors automatically.
+ * @var bool
+ */
+$wgSentryLogPhpErrors = true;
 
