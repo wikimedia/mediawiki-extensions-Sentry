@@ -1,0 +1,58 @@
+{
+	"name": "Sentry",
+	"version": "0.1",
+	"author": "Gergő Tisza",
+	"url": "https://www.mediawiki.org/wiki/Extension:Sentry",
+	"descriptionmsg": "sentry-desc",
+	"license-name": "MIT",
+	"type": "other",
+	"callback": "SentryHooks::registerExtension",
+	"MessagesDirs": {
+		"Sentry": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"SentryHooks": "SentryHooks.php"
+	},
+	"ResourceModules": {
+		"sentry.init": {
+			"scripts": [
+				"init.js"
+			]
+		},
+		"sentry.raven": {
+			"scripts": [
+				"raven/raven.js"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteExtPath": "Sentry/resources"
+	},
+	"Hooks": {
+		"ResourceLoaderGetConfigVars": [
+			"SentryHooks::onResourceLoaderGetConfigVars"
+		],
+		"BeforePageDisplay": [
+			"SentryHooks::onBeforePageDisplay"
+		],
+		"UnitTestsList": [
+			"SentryHooks::onUnitTestsList"
+		],
+		"ResourceLoaderTestModules": [
+			"SentryHooks::onResourceLoaderTestModules"
+		],
+		"LogException": [
+			"SentryHooks::onLogException"
+		]
+	},
+	"config": {
+		"SentryDsn": null,
+		"SentryWhitelist": false,
+		"SentryLogOnError": true,
+		"SentryLogPhpErrors": true
+	},
+	"manifest_version": 1
+}

@@ -1,6 +1,11 @@
 <?php
 
 class SentryHooks {
+
+	public static function registerExtension() {
+		SentryHooks::onRegistration();
+	}
+
 	/**
 	 * @param array $vars
 	 * @return bool
