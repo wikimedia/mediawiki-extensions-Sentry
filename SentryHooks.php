@@ -57,21 +57,47 @@ class SentryHooks {
 		return substr( $dsn, 0, $colon_pos ) . substr( $dsn, $at_pos );
 	}
 
+	/**
+	 * Fake hook that is called at the end of Sentry.php.
+	 */
 	public static function onRegistration() {
 		if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 			require_once( __DIR__ . '/vendor/autoload.php' );
 		}
 	}
 
-	public static function onLogException( Exception $e ) {
-		global $wgSentryDsn, $wgSentryLogPhpErrors;
+	/**
+	 * @param Exception $e
+	 * @param bool $suppressed True if the error is below the level set in error_reporting().
+	 * @return bool
+	 */
+	public static function onLogException( Exception $e, $suppressed ) {
+		global $wgSentryDsn, $wgSentryLogPhpErrors, $wgVersion;
 
-		if ( !$wgSentryLogPhpErrors ) {
+		if ( !$wgSentryLogPhpErrors || $suppressed ) {
 			return true;
 		}
 
 		$client = new Raven_Client( $wgSentryDsn );
-		$client->captureException( $e );
+
+		$data = array(
+			'tags' => array(
+				'host' => wfHostname(),
+				'wiki' => wfWikiID(),
+				'version' => $wgVersion,
+			),
+		);
+		if ( isset( $e->_mwLogId ) ) {
+			$data['event_id'] = $e->_mwLogId;
+		}
+		if ( $e instanceof DBQueryError ) {
+			$data['culprit'] = $e->fname;
+		}
+
+		$client->captureException( $e, $data );
+		if ( $client->getLastError() !== null ) {
+			wfDebugLog( 'sentry', 'Sentry error: ' . $client->getLastError() );
+		}
 
 		return true;
 	}
