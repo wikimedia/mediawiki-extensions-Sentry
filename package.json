@@ -3,6 +3,6 @@
     "test": "jshint ."
   },
   "devDependencies": {
-    "jshint": "2.6.3"
+    "jshint": "2.8.0"
   }
 }
