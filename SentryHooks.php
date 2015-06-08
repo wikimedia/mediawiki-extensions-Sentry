@@ -56,4 +56,24 @@ class SentryHooks {
 		}
 		return substr( $dsn, 0, $colon_pos ) . substr( $dsn, $at_pos );
 	}
+
+	public static function onRegistration() {
+		if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+			require_once( __DIR__ . '/vendor/autoload.php' );
+		}
+	}
+
+	public static function onLogException( Exception $e ) {
+		global $wgSentryDsn, $wgSentryLogPhpErrors;
+
+		if ( !$wgSentryLogPhpErrors ) {
+			return true;
+		}
+
+		$client = new Raven_Client( $wgSentryDsn );
+		$client->captureException( $e );
+
+		return true;
+	}
 }
+
