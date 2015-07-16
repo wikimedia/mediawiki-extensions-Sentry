@@ -26,13 +26,9 @@
 					language: mw.config.get( 'wgUserLanguage' )
 				};
 
-				// FIXME: https://github.com/getsentry/raven-js/issues/316
-				// There is no way to use Raven without installing it as the global error handler;
-				// and it will pass all errors to the previously registered error handler, which
-				// would cause duplicate reports.
-				window.onerror = undefined;
-
 				Raven.config( config.dsn, options ).install();
+
+				mw.trackUnsubscribe( handleGlobalError );
 
 				return Raven;
 			} );
@@ -62,19 +58,30 @@
 		} );
 	}
 
-	// make these available for unit tests
-	mw.sentry = { initRaven: initRaven, report: report };
-
-	mw.trackSubscribe( 'resourceloader.exception', report );
-
-	mw.trackSubscribe( 'global.error', function ( topic, data ) {
+	/**
+	 * Handles global.error events.
+	 * There is no way to stop Raven from replacing window.onerror (https://github.com/getsentry/raven-js/issues/316)
+	 * and it will pass errors to the old handler after reporting them, so we need a temporary handler to avoid
+	 * double reporting. This handler will load Raven the first time it is called, and handle errors until Raven is
+	 * loaded; once that happens, Raven handles errors on its own and this handler needs to be removed.
+	 * @param {string} topic mw.track() queue name
+	 * @param {Object} data
+	 */
+	function handleGlobalError( topic, data ) {
 		mw.sentry.initRaven().done( function ( raven ) {
 			// By this point, Raven replaced the old window.onerror; we need to process errors
 			// caught before that which are queued in mw.track.
 			window.onerror.call( window, data.errorMessage, data.url, data.lineNumber, data.columnNumber,
 				data.errorObject );
 		} );
-	} );
+	}
+
+	// make these available for unit tests
+	mw.sentry = { initRaven: initRaven, report: report };
+
+	mw.trackSubscribe( 'resourceloader.exception', report );
+
+	mw.trackSubscribe( 'global.error',  handleGlobalError );
 
 	mw.trackSubscribe( 'eventlogging.error', function ( topic, error ) {
 		mw.sentry.initRaven().done( function ( raven ) {
