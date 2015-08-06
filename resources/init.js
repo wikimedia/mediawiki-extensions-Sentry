@@ -1,5 +1,6 @@
 ( function ( mw, $ ) {
-	var ravenPromise;
+	var ravenPromise,
+		errorCount = 0;
 
 	/**
 	 * @return {jQuery.Deferred} a deferred with the Raven.js object
@@ -24,6 +25,16 @@
 					pageName: mw.config.get( 'wgPageName' ),
 					userGroups: mw.config.get( 'wgUserGroups' ),
 					language: mw.config.get( 'wgUserLanguage' )
+				};
+
+				// don't flood the server / freeze the client when something generates
+				// an endless stream of errors
+				options.shouldSendCallback = function () {
+					if ( errorCount++ >= 5 ) {
+						Raven.uninstall();
+						return false;
+					}
+					return true;
 				};
 
 				Raven.config( config.dsn, options ).install();
