@@ -1,6 +1,4 @@
 {
-	"@metadata": {
-		"authors": []
-	},
+	"@metadata": [],
 	"sentry-desc": "{{desc|what=extension|name=Sentry|url=https://www.mediawiki.org/wiki/Extension:Sentry}}"
 }
