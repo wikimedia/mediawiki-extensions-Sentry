@@ -37,7 +37,10 @@ class SentryHooks {
 		$paths[] = __DIR__ . '/tests';
 	}
 
-	public static function onResourceLoaderTestModules( array &$testModules, ResourceLoader &$resourceLoader ) {
+	public static function onResourceLoaderTestModules(
+		array &$testModules,
+		ResourceLoader &$resourceLoader
+	) {
 		$testModules['qunit']['sentry.test'] = array(
 			'scripts' => array( 'init.test.js' ),
 			'dependencies' => array( 'sentry.init' ),
@@ -67,7 +70,7 @@ class SentryHooks {
 	 */
 	public static function onRegistration() {
 		if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-			require_once( __DIR__ . '/vendor/autoload.php' );
+			require_once ( __DIR__ . '/vendor/autoload.php' );
 		}
 	}
 
