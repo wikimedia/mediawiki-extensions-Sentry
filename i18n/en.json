@@ -1,4 +1,6 @@
 {
-	"sentry-desc": "[https://getsentry.com/ Sentry] integration"
+	"@metadata": {
+		"authors": []
+	},
+	"sentry-desc": "Provides [https://getsentry.com/ Sentry] integration"
 }
-

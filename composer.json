@@ -2,12 +2,23 @@
 	"name": "mediawiki/sentry",
 	"type": "mediawiki-extension",
 	"description": "Send MediaWiki errors to Sentry, a realtime, platform-agnostic error logging and aggregation platform",
-	"keywords": ["MediaWiki", "Sentry", "error logging"],
+	"keywords": [
+		"MediaWiki",
+		"Sentry",
+		"error logging"
+	],
 	"homepage": "https://www.mediawiki.org/wiki/Extension:Sentry",
 	"license" : "MIT",
-
 	"require": {
 		"composer/installers": ">=1.0.1",
 		"raven/raven": "0.12.0"
+	},
+	"require-dev": {
+		"jakub-onderka/php-parallel-lint": "0.9.*"
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor"
+		]
 	}
 }
