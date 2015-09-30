@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Beta16"
+		]
+	},
+	"sentry-desc": "Fornisce integrazione [https://getsentry.com/ Sentry]"
+}
