@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Lokal Profil"
+			"Lokal Profil",
+			"WikiPhoenix"
 		]
 	},
-	"sentry-desc": "[https://getsentry.com/ Sentry]-integration"
+	"sentry-desc": "Tillhandahåller [https://getsentry.com/ Sentry]-integration"
 }
