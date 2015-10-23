@@ -8,14 +8,14 @@
 		"error logging"
 	],
 	"homepage": "https://www.mediawiki.org/wiki/Extension:Sentry",
-	"license" : "MIT",
+	"license": "MIT",
 	"require": {
 		"composer/installers": ">=1.0.1",
 		"raven/raven": "0.12.0"
 	},
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "0.9",
-		"mediawiki/mediawiki-codesniffer": "0.4.0"
+		"mediawiki/mediawiki-codesniffer": "0.5.0"
 	},
 	"scripts": {
 		"test": [
