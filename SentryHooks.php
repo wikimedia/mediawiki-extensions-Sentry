@@ -13,11 +13,11 @@ class SentryHooks {
 	public static function onResourceLoaderGetConfigVars( &$vars ) {
 		global $wgSentryDsn, $wgSentryWhitelist, $wgSentryLogOnError;
 
-		$vars['wgSentry'] = array(
+		$vars['wgSentry'] = [
 			'dsn' => self::getPublicDsnFromFullDsn( $wgSentryDsn ),
 			'whitelist' => $wgSentryWhitelist,
 			'logOnError' => $wgSentryLogOnError,
-		);
+		];
 
 		return true;
 	}
@@ -28,7 +28,7 @@ class SentryHooks {
 	 * @return bool
 	 */
 	public static function onBeforePageDisplay( &$out, &$skin ) {
-		$out->addModules( array( 'sentry.init' ) );
+		$out->addModules( [ 'sentry.init' ] );
 
 		return true;
 	}
@@ -41,12 +41,12 @@ class SentryHooks {
 		array &$testModules,
 		ResourceLoader &$resourceLoader
 	) {
-		$testModules['qunit']['sentry.test'] = array(
-			'scripts' => array( 'init.test.js' ),
-			'dependencies' => array( 'sentry.init' ),
+		$testModules['qunit']['sentry.test'] = [
+			'scripts' => [ 'init.test.js' ],
+			'dependencies' => [ 'sentry.init' ],
 			'localBasePath' => __DIR__ . '/tests/qunit',
 			'remoteExtPath' => 'Sentry/tests/qunit',
-		);
+		];
 	}
 
 	/**
@@ -88,13 +88,13 @@ class SentryHooks {
 
 		$client = new Raven_Client( $wgSentryDsn );
 
-		$data = array(
-			'tags' => array(
+		$data = [
+			'tags' => [
 				'host' => wfHostname(),
 				'wiki' => wfWikiID(),
 				'version' => $wgVersion,
-			),
-		);
+			],
+		];
 		if ( isset( $e->_mwLogId ) ) {
 			$data['event_id'] = $e->_mwLogId;
 		}
