@@ -33,10 +33,6 @@ class SentryHooks {
 		return true;
 	}
 
-	public static function onUnitTestsList( array &$paths ) {
-		$paths[] = __DIR__ . '/tests';
-	}
-
 	public static function onResourceLoaderTestModules(
 		array &$testModules,
 		ResourceLoader &$resourceLoader

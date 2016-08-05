@@ -38,9 +38,6 @@
 		"BeforePageDisplay": [
 			"SentryHooks::onBeforePageDisplay"
 		],
-		"UnitTestsList": [
-			"SentryHooks::onUnitTestsList"
-		],
 		"ResourceLoaderTestModules": [
 			"SentryHooks::onResourceLoaderTestModules"
 		],
