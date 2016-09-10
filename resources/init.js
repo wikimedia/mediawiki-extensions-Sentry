@@ -3,13 +3,16 @@
 		errorCount = 0;
 
 	/**
-	 * @return {jQuery.Deferred} a deferred with the Raven.js object
+	 * @return {jQuery.Deferred} a deferred with two values: the Raven.js object and the TraceKit
+	 *   error handler
 	 */
 	function initRaven() {
 		if ( !ravenPromise ) {
 			ravenPromise = mw.loader.using( 'sentry.raven' ).then( function () {
 				var config = mw.config.get( 'wgSentry' ),
-					options = {};
+					options = {},
+					oldOnError,
+					traceKitOnError;
 
 				if ( config.whitelist ) {
 					options.whitelistUrls = config.whitelist.slice( 0 );
@@ -37,11 +40,21 @@
 					return true;
 				};
 
-				Raven.config( config.dsn, options ).install();
+				// Annoyingly, there is no way to install Raven/TraceKit without it taking over
+				// the global error handler (and chaining the old handler after itself).
+				oldOnError = window.onerror;
+				window.onerror = null;
+				try {
+					Raven.config(config.dsn, options).install();
+				} catch ( e ) {
+					window.onerror = oldOnError;
+					mw.log.error( e );
+					return $.Deferred().reject( e );
+				}
+				traceKitOnError = window.onerror;
+				window.onerror = oldOnError;
 
-				mw.trackUnsubscribe( handleGlobalError );
-
-				return Raven;
+				return $.Deferred().resolve( Raven, traceKitOnError );
 			} );
 		}
 		return ravenPromise;
@@ -57,7 +70,7 @@
 	 * @param {Object} [data.context] Additional key-value pairs to be recorded as Sentry tags
 	 */
 	function report( topic, data ) {
-		mw.sentry.initRaven().done( function ( raven ) {
+		mw.sentry.initRaven().done( function ( raven/*, traceKitOnError*/ ) {
 			var tags = { source: data.source };
 
 			if ( data.module ) {
@@ -79,10 +92,8 @@
 	 * @param {Object} data
 	 */
 	function handleGlobalError( topic, data ) {
-		mw.sentry.initRaven().done( function ( raven ) {
-			// By this point, Raven replaced the old window.onerror; we need to process errors
-			// caught before that which are queued in mw.track.
-			window.onerror.call( window, data.errorMessage, data.url, data.lineNumber, data.columnNumber,
+		mw.sentry.initRaven().done( function ( raven, traceKitOnError ) {
+			traceKitOnError.call( window, data.errorMessage, data.url, data.lineNumber, data.columnNumber,
 				data.errorObject );
 		} );
 	}
@@ -95,7 +106,7 @@
 	mw.trackSubscribe( 'global.error',  handleGlobalError );
 
 	mw.trackSubscribe( 'eventlogging.error', function ( topic, error ) {
-		mw.sentry.initRaven().done( function ( raven ) {
+		mw.sentry.initRaven().done( function ( raven/*, traceKitOnError*/ ) {
 			raven.captureMessage( error, { source: 'EventLogging' } );
 		} );
 	} );
