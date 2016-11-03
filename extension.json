@@ -6,7 +6,6 @@
 	"descriptionmsg": "sentry-desc",
 	"license-name": "MIT",
 	"type": "other",
-	"callback": "SentryHooks::registerExtension",
 	"MessagesDirs": {
 		"Sentry": [
 			"i18n"
@@ -51,5 +50,6 @@
 		"SentryLogOnError": true,
 		"SentryLogPhpErrors": true
 	},
+	"load_composer_autoloader": true,
 	"manifest_version": 1
 }

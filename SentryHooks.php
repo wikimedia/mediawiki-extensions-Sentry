@@ -62,15 +62,6 @@ class SentryHooks {
 	}
 
 	/**
-	 * Fake hook that is called at the end of Sentry.php.
-	 */
-	public static function onRegistration() {
-		if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-			require_once ( __DIR__ . '/vendor/autoload.php' );
-		}
-	}
-
-	/**
 	 * @param Exception $e
 	 * @param bool $suppressed True if the error is below the level set in error_reporting().
 	 * @return bool
