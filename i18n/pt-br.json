@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"!Silent"
+		]
+	},
+	"sentry-desc": "Fornece uma integração com o [https://getsentry.com/ Sentry]"
+}
