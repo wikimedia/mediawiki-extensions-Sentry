@@ -27,4 +27,3 @@ class SentryHooksTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'http://public_key@example.com/project-id', $publicDsn );
 	}
 }
-
