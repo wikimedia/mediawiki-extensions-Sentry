@@ -3,7 +3,7 @@
 class SentryHooks {
 
 	public static function registerExtension() {
-		SentryHooks::onRegistration();
+		self::onRegistration();
 	}
 
 	/**
