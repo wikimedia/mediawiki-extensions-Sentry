@@ -1,7 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Rangekill"
+			"Rangekill",
+			"Mainframe98"
 		]
-	}
+	},
+	"sentry-desc": "Voegt [https://getsentry.com/ Sentry] integratie toe"
 }
