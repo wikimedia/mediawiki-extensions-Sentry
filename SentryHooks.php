@@ -7,7 +7,7 @@ class SentryHooks {
 	}
 
 	/**
-	 * @param array $vars
+	 * @param array &$vars
 	 * @return bool
 	 */
 	public static function onResourceLoaderGetConfigVars( &$vars ) {
@@ -23,8 +23,8 @@ class SentryHooks {
 	}
 
 	/**
-	 * @param OutputPage $out
-	 * @param Skin $skin
+	 * @param OutputPage &$out
+	 * @param Skin &$skin
 	 * @return bool
 	 */
 	public static function onBeforePageDisplay( &$out, &$skin ) {
