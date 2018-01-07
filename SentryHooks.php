@@ -62,11 +62,11 @@ class SentryHooks {
 	}
 
 	/**
-	 * @param Exception $e
+	 * @param Exception|Throwable $e
 	 * @param bool $suppressed True if the error is below the level set in error_reporting().
 	 * @return bool
 	 */
-	public static function onLogException( Exception $e, $suppressed ) {
+	public static function onLogException( $e, $suppressed ) {
 		global $wgSentryDsn, $wgSentryLogPhpErrors, $wgVersion;
 
 		if ( !$wgSentryLogPhpErrors || $suppressed ) {
