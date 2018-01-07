@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kly"
+		]
+	},
+	"sentry-desc": "提供 [https://getsentry.com/ Sentry] 整合"
+}
