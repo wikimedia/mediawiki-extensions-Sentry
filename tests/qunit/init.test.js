@@ -11,7 +11,7 @@
 		this.sandbox.stub( mw.loader, 'using' ).returns( $.Deferred().resolve() );
 
 		QUnit.stop();
-		mw.sentry.initRaven().then( function ( raven, traceKitOnError ) {
+		mw.sentry.initRaven().then( function ( raven /* , traceKitOnError */ ) {
 			assert.strictEqual( raven, Raven, 'initRaven() returns Raven as a promise' );
 			assert.ok( Raven.config.called, 'Raven is configured' );
 			assert.ok( Raven.install.called, 'Raven is installed' );
@@ -20,8 +20,8 @@
 			Raven.install.reset();
 
 			return mw.sentry.initRaven();
-		} ).then( function ( raven, traceKitOnError ) {
-			assert.strictEqual(raven, Raven, 'initRaven() returns Raven on second invocation' );
+		} ).then( function ( raven /* , traceKitOnError */ ) {
+			assert.strictEqual( raven, Raven, 'initRaven() returns Raven on second invocation' );
 			assert.ok( !Raven.config.called, 'Raven is not configured twice' );
 			assert.ok( !Raven.install.called, 'Raven is not installed twice' );
 			QUnit.start();
@@ -34,13 +34,13 @@
 		this.sandbox.stub( mw.sentry, 'initRaven' ).returns( $.Deferred().resolve( raven ) );
 
 		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought' } );
-		assert.strictEqual( raven.captureException.lastCall.args[0], 42, 'Exception matches' );
-		assert.strictEqual( raven.captureException.lastCall.args[1].tags.source, 'Deep Thought', 'Source matches' );
+		assert.strictEqual( raven.captureException.lastCall.args[ 0 ], 42, 'Exception matches' );
+		assert.strictEqual( raven.captureException.lastCall.args[ 1 ].tags.source, 'Deep Thought', 'Source matches' );
 
 		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', module: 'foo' } );
-		assert.strictEqual( raven.captureException.lastCall.args[1].tags.module, 'foo', 'Module matches' );
+		assert.strictEqual( raven.captureException.lastCall.args[ 1 ].tags.module, 'foo', 'Module matches' );
 
 		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', context: { foo: 'bar' } } );
-		assert.strictEqual( raven.captureException.lastCall.args[1].tags.foo, 'bar', 'Custom context matches' );
+		assert.strictEqual( raven.captureException.lastCall.args[ 1 ].tags.foo, 'bar', 'Custom context matches' );
 	} );
 }( mediaWiki, jQuery ) );

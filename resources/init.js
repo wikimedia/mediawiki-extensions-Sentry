@@ -45,7 +45,7 @@
 				oldOnError = window.onerror;
 				window.onerror = null;
 				try {
-					Raven.config(config.dsn, options).install();
+					Raven.config( config.dsn, options ).install();
 				} catch ( e ) {
 					window.onerror = oldOnError;
 					mw.log.error( e );
@@ -70,7 +70,7 @@
 	 * @param {Object} [data.context] Additional key-value pairs to be recorded as Sentry tags
 	 */
 	function report( topic, data ) {
-		mw.sentry.initRaven().done( function ( raven/*, traceKitOnError*/ ) {
+		mw.sentry.initRaven().done( function ( raven /* , traceKitOnError */ ) {
 			var tags = { source: data.source };
 
 			if ( data.module ) {
@@ -103,11 +103,11 @@
 
 	mw.trackSubscribe( 'resourceloader.exception', report );
 
-	mw.trackSubscribe( 'global.error',  handleGlobalError );
+	mw.trackSubscribe( 'global.error', handleGlobalError );
 
 	mw.trackSubscribe( 'eventlogging.error', function ( topic, error ) {
-		mw.sentry.initRaven().done( function ( raven/*, traceKitOnError*/ ) {
+		mw.sentry.initRaven().done( function ( raven /* , traceKitOnError */ ) {
 			raven.captureMessage( error, { source: 'EventLogging' } );
 		} );
 	} );
-} ) ( mediaWiki, jQuery );
+}( mediaWiki, jQuery ) );
