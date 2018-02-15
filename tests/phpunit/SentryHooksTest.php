@@ -3,7 +3,7 @@
 /**
  * @group Sentry
  */
-class SentryHooksTest extends PHPUnit_Framework_TestCase {
+class SentryHooksTest extends PHPUnit\Framework\TestCase {
 	/**
 	 * @covers SentryHooks::getPublicDsnFromFullDsn()
 	 */
