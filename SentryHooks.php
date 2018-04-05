@@ -1,5 +1,7 @@
 <?php
 
+use Wikimedia\Rdbms\DBQueryError;
+
 class SentryHooks {
 
 	public static function registerExtension() {
