@@ -4,10 +4,6 @@ use Wikimedia\Rdbms\DBQueryError;
 
 class SentryHooks {
 
-	public static function registerExtension() {
-		self::onRegistration();
-	}
-
 	/**
 	 * @param array &$vars
 	 * @return bool
