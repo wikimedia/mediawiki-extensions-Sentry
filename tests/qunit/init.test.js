@@ -1,7 +1,7 @@
 ( function ( mw, $ ) {
 	QUnit.module( 'sentry', QUnit.newMwEnvironment() );
 
-	QUnit.test( 'initRaven()', 6, function ( assert ) {
+	QUnit.test( 'initRaven()', function ( assert ) {
 		window.Raven = window.Raven || undefined; // sinon.js won't stub nonexistent properties
 		this.sandbox.stub( window, 'Raven', {
 			config: this.sandbox.stub().returnsThis(),
@@ -10,8 +10,7 @@
 
 		this.sandbox.stub( mw.loader, 'using' ).returns( $.Deferred().resolve() );
 
-		QUnit.stop();
-		mw.sentry.initRaven().then( function ( raven /* , traceKitOnError */ ) {
+		return mw.sentry.initRaven().then( function ( raven /* , traceKitOnError */ ) {
 			assert.strictEqual( raven, Raven, 'initRaven() returns Raven as a promise' );
 			assert.ok( Raven.config.called, 'Raven is configured' );
 			assert.ok( Raven.install.called, 'Raven is installed' );
@@ -24,11 +23,10 @@
 			assert.strictEqual( raven, Raven, 'initRaven() returns Raven on second invocation' );
 			assert.ok( !Raven.config.called, 'Raven is not configured twice' );
 			assert.ok( !Raven.install.called, 'Raven is not installed twice' );
-			QUnit.start();
 		} );
 	} );
 
-	QUnit.test( 'report()', 4, function ( assert ) {
+	QUnit.test( 'report()', function ( assert ) {
 		var raven = { captureException: this.sandbox.stub() };
 
 		this.sandbox.stub( mw.sentry, 'initRaven' ).returns( $.Deferred().resolve( raven ) );
