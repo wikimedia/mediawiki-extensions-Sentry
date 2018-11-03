@@ -1,4 +1,4 @@
-( function ( mw, $ ) {
+( function () {
 	QUnit.module( 'sentry', QUnit.newMwEnvironment() );
 
 	QUnit.test( 'initRaven()', function ( assert ) {
@@ -41,4 +41,4 @@
 		mw.sentry.report( 'some-topic', { exception: 42, source: 'Deep Thought', context: { foo: 'bar' } } );
 		assert.strictEqual( raven.captureException.lastCall.args[ 1 ].tags.foo, 'bar', 'Custom context matches' );
 	} );
-}( mediaWiki, jQuery ) );
+}() );

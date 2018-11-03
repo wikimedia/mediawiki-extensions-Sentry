@@ -1,4 +1,4 @@
-( function ( mw, $ ) {
+( function () {
 	var ravenPromise,
 		errorCount = 0;
 
@@ -84,17 +84,26 @@
 
 	/**
 	 * Handles global.error events.
+	 *
 	 * There is no way to stop Raven from replacing window.onerror (https://github.com/getsentry/raven-js/issues/316)
-	 * and it will pass errors to the old handler after reporting them, so we need a temporary handler to avoid
-	 * double reporting. This handler will load Raven the first time it is called, and handle errors until Raven is
-	 * loaded; once that happens, Raven handles errors on its own and this handler needs to be removed.
+	 * and it will pass errors to the old handler after reporting them, so we need a temporary
+	 * handler to avoid double reporting. This handler will load Raven the first time it is called,
+	 * and handle errors until Raven is loaded; once that happens, Raven handles errors on its own
+	 * and this handler needs to be removed.
+	 *
 	 * @param {string} topic mw.track() queue name
 	 * @param {Object} data
 	 */
 	function handleGlobalError( topic, data ) {
 		mw.sentry.initRaven().done( function ( raven, traceKitOnError ) {
-			traceKitOnError.call( window, data.errorMessage, data.url, data.lineNumber, data.columnNumber,
-				data.errorObject );
+			traceKitOnError.call(
+				window,
+				data.errorMessage,
+				data.url,
+				data.lineNumber,
+				data.columnNumber,
+				data.errorObject
+			);
 		} );
 	}
 
@@ -110,4 +119,4 @@
 			raven.captureMessage( error, { source: 'EventLogging' } );
 		} );
 	} );
-}( mediaWiki, jQuery ) );
+}() );
