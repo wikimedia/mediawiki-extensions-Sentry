@@ -21,8 +21,8 @@
 			return mw.sentry.initRaven();
 		} ).then( function ( raven /* , traceKitOnError */ ) {
 			assert.strictEqual( raven, Raven, 'initRaven() returns Raven on second invocation' );
-			assert.ok( !Raven.config.called, 'Raven is not configured twice' );
-			assert.ok( !Raven.install.called, 'Raven is not installed twice' );
+			assert.strictEqual( Raven.config.called, false, 'Raven is not configured twice' );
+			assert.strictEqual( Raven.install.called, false, 'Raven is not installed twice' );
 		} );
 	} );
 
