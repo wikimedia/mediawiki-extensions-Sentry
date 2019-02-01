@@ -6,7 +6,6 @@ class SentryHooks {
 
 	/**
 	 * @param array &$vars
-	 * @return bool
 	 */
 	public static function onResourceLoaderGetConfigVars( &$vars ) {
 		global $wgSentryDsn, $wgSentryWhitelist, $wgSentryLogOnError;
@@ -16,19 +15,14 @@ class SentryHooks {
 			'whitelist' => $wgSentryWhitelist,
 			'logOnError' => $wgSentryLogOnError,
 		];
-
-		return true;
 	}
 
 	/**
 	 * @param OutputPage &$out
 	 * @param Skin &$skin
-	 * @return bool
 	 */
 	public static function onBeforePageDisplay( &$out, &$skin ) {
 		$out->addModules( [ 'sentry.init' ] );
-
-		return true;
 	}
 
 	public static function onResourceLoaderTestModules(
@@ -62,13 +56,12 @@ class SentryHooks {
 	/**
 	 * @param Exception|Throwable $e
 	 * @param bool $suppressed True if the error is below the level set in error_reporting().
-	 * @return bool
 	 */
 	public static function onLogException( $e, $suppressed ) {
 		global $wgSentryDsn, $wgSentryLogPhpErrors, $wgVersion;
 
 		if ( !$wgSentryLogPhpErrors || $suppressed ) {
-			return true;
+			return;
 		}
 
 		$client = new Raven_Client( $wgSentryDsn );
@@ -91,7 +84,5 @@ class SentryHooks {
 		if ( $client->getLastError() !== null ) {
 			wfDebugLog( 'sentry', 'Sentry error: ' . $client->getLastError() );
 		}
-
-		return true;
 	}
 }
