@@ -8,7 +8,7 @@ class SentryHooksTest extends PHPUnit\Framework\TestCase {
 	 * @covers SentryHooks::getPublicDsnFromFullDsn()
 	 */
 	public function testGetPublicDsnFromFullDsn() {
-		$getPublicDsnFromFullDsn = new ReflectionMethod( 'SentryHooks', 'getPublicDsnFromFullDsn' );
+		$getPublicDsnFromFullDsn = new ReflectionMethod( SentryHooks::class, 'getPublicDsnFromFullDsn' );
 		$getPublicDsnFromFullDsn->setAccessible( true );
 
 		// normal
