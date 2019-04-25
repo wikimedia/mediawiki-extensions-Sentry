@@ -32,7 +32,7 @@ class SentryHooks {
 		$testModules['qunit']['sentry.test'] = [
 			'scripts' => [ 'init.test.js' ],
 			'dependencies' => [ 'sentry.init' ],
-			'localBasePath' => __DIR__ . '/tests/qunit',
+			'localBasePath' => dirname( __DIR__ ) . '/tests/qunit',
 			'remoteExtPath' => 'Sentry/tests/qunit',
 		];
 	}

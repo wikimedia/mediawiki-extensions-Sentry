@@ -12,7 +12,7 @@
 		]
 	},
 	"AutoloadClasses": {
-		"SentryHooks": "SentryHooks.php"
+		"SentryHooks": "includes/SentryHooks.php"
 	},
 	"ResourceModules": {
 		"sentry.init": {
