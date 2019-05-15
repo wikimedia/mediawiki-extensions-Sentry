@@ -45,6 +45,7 @@
 		]
 	},
 	"config": {
+		"SentryEventGateUri": null,
 		"SentryDsn": null,
 		"SentryWhitelist": false,
 		"SentryLogOnError": true,
