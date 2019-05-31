@@ -73,7 +73,9 @@ class SentryHooks {
 				'version' => $wgVersion,
 			],
 		];
+		/** @phan-suppress-next-line PhanUndeclaredProperty */
 		if ( isset( $e->_mwLogId ) ) {
+			/** @phan-suppress-next-line PhanUndeclaredProperty */
 			$data['event_id'] = $e->_mwLogId;
 		}
 		if ( $e instanceof DBQueryError ) {
