@@ -1,6 +1,11 @@
+/* eslint camelcase: ["error", {properties: "never"}] */
 ( function () {
 	var ravenPromise,
-		errorCount = 0;
+		errorCount = 0,
+		EVENT_GATE_SHELL = {
+			$schema: '/client/error/1.0.0',
+			meta: { stream: 'client.error' }
+		};
 
 	/**
 	 * @return {jQuery.Deferred} a deferred with two values: the Raven.js object and the TraceKit
@@ -14,6 +19,14 @@
 					oldOnError,
 					traceKitOnError;
 
+				// If EventGate is configured, this extension will send errors to it.
+				// However, it needs to configure the sentry dsn to initialize Raven
+				if ( config.eventGateUri ) {
+					config.dsn = config.dsn || 'https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@sentry.io/project';
+				} else if ( !config.dsn ) {
+					mw.log.error( 'See README for how to configure Sentry server' );
+				}
+
 				if ( config.whitelist ) {
 					options.whitelistUrls = config.whitelist.slice( 0 );
 					options.whitelistUrls.push( location.host );
@@ -25,18 +38,32 @@
 					skin: mw.config.get( 'skin' ),
 					action: mw.config.get( 'wgAction' ),
 					ns: mw.config.get( 'wgNamespaceNumber' ),
-					pageName: mw.config.get( 'wgPageName' ),
-					userGroups: mw.config.get( 'wgUserGroups' ),
+					page_name: mw.config.get( 'wgPageName' ),
+					user_groups: mw.config.get( 'wgUserGroups' ),
 					language: mw.config.get( 'wgUserLanguage' )
 				};
 
-				// don't flood the server / freeze the client when something generates
-				// an endless stream of errors
-				options.shouldSendCallback = function () {
+				options.shouldSendCallback = function ( data ) {
+					var wrappedData;
+					// don't flood the server / freeze the client when something generates
+					// an endless stream of errors
 					if ( errorCount++ >= 5 ) {
 						Raven.uninstall();
 						return false;
 					}
+
+					if ( config.eventGateUri ) {
+						// hijack the actual sending and POST to EventGate
+						// TODO: this is for beta testing only, we need to implement it properly as
+						//       we work on productionizing
+						wrappedData = $.extend( {}, EVENT_GATE_SHELL, data );
+						$.post( config.eventGateUri, wrappedData )
+							.fail( function ( error ) {
+								mw.log.warn( 'POSTing error to Sentry failed', error );
+							} );
+						return false;
+					}
+
 					return true;
 				};
 

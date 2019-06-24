@@ -8,9 +8,10 @@ class SentryHooks {
 	 * @param array &$vars
 	 */
 	public static function onResourceLoaderGetConfigVars( &$vars ) {
-		global $wgSentryDsn, $wgSentryWhitelist, $wgSentryLogOnError;
+		global $wgSentryEventGateUri, $wgSentryDsn, $wgSentryWhitelist, $wgSentryLogOnError;
 
 		$vars['wgSentry'] = [
+			'eventGateUri' => $wgSentryEventGateUri,
 			'dsn' => self::getPublicDsnFromFullDsn( $wgSentryDsn ),
 			'whitelist' => $wgSentryWhitelist,
 			'logOnError' => $wgSentryLogOnError,
