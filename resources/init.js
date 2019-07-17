@@ -44,7 +44,7 @@
 				};
 
 				options.shouldSendCallback = function ( data ) {
-					var wrappedData;
+					var eventGateData;
 					// don't flood the server / freeze the client when something generates
 					// an endless stream of errors
 					if ( errorCount++ >= 5 ) {
@@ -56,10 +56,28 @@
 						// hijack the actual sending and POST to EventGate
 						// TODO: this is for beta testing only, we need to implement it properly as
 						//       we work on productionizing
-						wrappedData = $.extend( {}, EVENT_GATE_SHELL, data );
-						$.post( config.eventGateUri, wrappedData )
+						eventGateData = $.extend( {}, EVENT_GATE_SHELL, data );
+
+						// use a flatter format, Sentry's tag syntax doesn't play well with Logstash
+						delete eventGateData.tags;
+						$.each( data.tags, function ( tagName, tagValue ) {
+							eventGateData[ 'tag_' + tagName ] = tagValue;
+						} );
+
+						// Sentry's culprit field is based on script URL, which is not very useful
+						// with ResourceLoader. Provide function-based fields for grouping instead.
+						eventGateData.culprit_function = null;
+						eventGateData.culprit_stack = '';
+						if ( data.stacktrace && data.stacktrace.frames.length ) {
+							eventGateData.culprit_function = data.stacktrace.frames[ 0 ].function;
+							eventGateData.culprit_stack = $.map( data.stacktrace.frames, function ( frame ) {
+								return frame.function;
+							} ).join( ' < ' );
+						}
+
+						$.post( config.eventGateUri, eventGateData )
 							.fail( function ( error ) {
-								mw.log.warn( 'POSTing error to Sentry failed', error );
+								mw.log.warn( 'POSTing error to EventGate failed', error );
 							} );
 						return false;
 					}
