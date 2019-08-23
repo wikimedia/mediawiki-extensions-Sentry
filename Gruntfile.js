@@ -16,6 +16,10 @@ module.exports = function ( grunt ) {
 			]
 		},
 		eslint: {
+			options: {
+				cache: true,
+				reportUnusedDisableDirectives: true
+			},
 			all: [
 				'**/*.js',
 				'!resources/raven/**',

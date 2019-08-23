@@ -4,3 +4,4 @@ composer.lock
 .*.swp
 .*.swo
 /package-lock.json
+/.eslintcache
