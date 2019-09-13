@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Rail"
+		]
+	},
+	"sentry-desc": "Dodaje integrację [https://getsentry.com/ Sentry]"
+}
