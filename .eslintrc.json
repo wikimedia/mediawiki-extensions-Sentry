@@ -8,33 +8,5 @@
 		"mw": false,
 		"$": false,
 		"Raven": false
-	},
-	"rules": {
-		"brace-style": "warn",
-		"camelcase": "warn",
-		"eqeqeq": "warn",
-		"max-len": "warn",
-		"max-statements-per-line": "warn",
-		"new-cap": "warn",
-		"no-bitwise": "warn",
-		"no-constant-condition": "warn",
-		"no-dupe-keys": "warn",
-		"no-empty": "warn",
-		"no-implicit-globals": "warn",
-		"no-mixed-spaces-and-tabs": "warn",
-		"no-redeclare": "warn",
-		"no-shadow-restricted-names": "warn",
-		"no-tabs": "warn",
-		"no-undef": "warn",
-		"no-underscore-dangle": "warn",
-		"no-unused-expressions": "warn",
-		"no-unused-vars": "warn",
-		"no-use-before-define": "warn",
-		"no-useless-call": "warn",
-		"no-useless-concat": "warn",
-		"no-useless-escape": "warn",
-		"one-var": "warn",
-		"valid-jsdoc": "warn",
-		"vars-on-top": "warn"
 	}
 }
