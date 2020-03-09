@@ -23,7 +23,20 @@ class SentryHooks {
 	 * @param Skin &$skin
 	 */
 	public static function onBeforePageDisplay( &$out, &$skin ) {
+		global $wgSentryEventGateUri, $wgSentryDsn;
 		$out->addModules( [ 'sentry.init' ] );
+		if ( $wgSentryEventGateUri ) {
+			$parts = wfParseUrl( $wgSentryEventGateUri );
+			if ( $parts && isset( $parts['host'] ) ) {
+				$out->getCSP()->addDefaultSrc( $parts['host'] );
+			}
+		} elseif ( $wgSentryDsn ) {
+			// We only need to allow this if EventGate is not set.
+			$parts = wfParseUrl( self::getPublicDsnFromFullDsn( $wgSentryDsn ) );
+			if ( $parts && isset( $parts['host'] ) ) {
+				$out->getCSP()->addDefaultSrc( $parts['host'] );
+			}
+		}
 	}
 
 	public static function onResourceLoaderTestModules(
