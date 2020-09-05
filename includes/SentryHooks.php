@@ -39,18 +39,6 @@ class SentryHooks {
 		}
 	}
 
-	public static function onResourceLoaderTestModules(
-		array &$testModules,
-		ResourceLoader &$resourceLoader
-	) {
-		$testModules['qunit']['sentry.test'] = [
-			'scripts' => [ 'init.test.js' ],
-			'dependencies' => [ 'sentry.init' ],
-			'localBasePath' => dirname( __DIR__ ) . '/tests/qunit',
-			'remoteExtPath' => 'Sentry/tests/qunit',
-		];
-	}
-
 	/**
 	 * For JS logging, the private key must be omitted from the DSN.
 	 * @param string $dsn

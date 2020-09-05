@@ -26,6 +26,16 @@
 			]
 		}
 	},
+	"QUnitTestModule": {
+		"remoteExtPath": "Sentry/tests/qunit",
+		"localBasePath": "tests/qunit",
+		"scripts": [
+			"init.test.js"
+		],
+		"dependencies": [
+			"sentry.init"
+		]
+	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
 		"remoteExtPath": "Sentry/resources"
@@ -36,9 +46,6 @@
 		],
 		"BeforePageDisplay": [
 			"SentryHooks::onBeforePageDisplay"
-		],
-		"ResourceLoaderTestModules": [
-			"SentryHooks::onResourceLoaderTestModules"
 		],
 		"LogException": [
 			"SentryHooks::onLogException"
