@@ -1,12 +1,18 @@
 {
 	"root": true,
-	"extends": "wikimedia",
+	"extends": [
+		"wikimedia",
+		"wikimedia/mediawiki",
+		"wikimedia/jquery"
+	],
 	"env": {
 		"browser": true
 	},
 	"globals": {
-		"mw": false,
-		"$": false,
 		"Raven": false
+	},
+	"rules": {
+		"no-jquery/no-each-util": "warn",
+		"no-jquery/no-map-util": "warn"
 	}
 }
