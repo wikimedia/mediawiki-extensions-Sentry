@@ -60,7 +60,7 @@ class SentryHooks {
 	 * @param bool $suppressed True if the error is below the level set in error_reporting().
 	 */
 	public static function onLogException( $e, $suppressed ) {
-		global $wgSentryDsn, $wgSentryLogPhpErrors, $wgVersion;
+		global $wgSentryDsn, $wgSentryLogPhpErrors;
 
 		if ( !$wgSentryLogPhpErrors || $suppressed ) {
 			return;
@@ -72,7 +72,7 @@ class SentryHooks {
 			'tags' => [
 				'host' => wfHostname(),
 				'wiki' => wfWikiID(),
-				'version' => $wgVersion,
+				'version' => MW_VERSION,
 			],
 		];
 		/** @phan-suppress-next-line PhanUndeclaredProperty */

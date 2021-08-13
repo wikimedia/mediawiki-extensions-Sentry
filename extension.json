@@ -6,6 +6,9 @@
 	"descriptionmsg": "sentry-desc",
 	"license-name": "MIT",
 	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.33.0"
+	},
 	"MessagesDirs": {
 		"Sentry": [
 			"i18n"
