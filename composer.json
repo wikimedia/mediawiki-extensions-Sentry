@@ -23,7 +23,7 @@
 	"scripts": {
 		"test": [
 			"parallel-lint . --exclude vendor --exclude node_modules",
-			"phpcs -p",
+			"phpcs -ps",
 			"minus-x check ."
 		],
 		"fix": [

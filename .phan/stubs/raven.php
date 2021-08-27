@@ -2,7 +2,10 @@
 
 /**
  * Client class from optional sentry/sentry composer package
- * @phpcs:disable MediaWiki.Files.ClassMatchesFilename,Squiz.Classes.ValidClassName.NotCamelCaps
+ *
+ * @phpcs:disable MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic
+ * @phpcs:disable MediaWiki.Files.ClassMatchesFilename
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 class Raven_Client {
 	public function __construct( $options_or_dsn = null, $options = [] ) {
