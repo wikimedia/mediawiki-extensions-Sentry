@@ -71,7 +71,7 @@ class SentryHooks {
 		$data = [
 			'tags' => [
 				'host' => wfHostname(),
-				'wiki' => wfWikiID(),
+				'wiki' => WikiMap::getCurrentWikiId(),
 				'version' => MW_VERSION,
 			],
 		];
