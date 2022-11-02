@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"sentry-desc": "Forni integration con [https://getsentry.com/ Sentry]"
+}
