@@ -32,5 +32,10 @@
 		],
 		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -p"
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true
+		}
 	}
 }
