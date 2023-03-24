@@ -12,8 +12,8 @@
 
 		return mw.sentry.initRaven().then( function ( raven /* , traceKitOnError */ ) {
 			assert.strictEqual( raven, Raven, 'initRaven() returns Raven as a promise' );
-			assert.ok( Raven.config.called, 'Raven is configured' );
-			assert.ok( Raven.install.called, 'Raven is installed' );
+			assert.true( Raven.config.called, 'Raven is configured' );
+			assert.true( Raven.install.called, 'Raven is installed' );
 
 			Raven.config.reset();
 			Raven.install.reset();
