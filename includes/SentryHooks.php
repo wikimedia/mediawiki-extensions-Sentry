@@ -12,7 +12,7 @@ class SentryHooks {
 
 		$vars['wgSentry'] = [
 			'eventGateUri' => $wgSentryEventGateUri,
-			'dsn' => self::getPublicDsnFromFullDsn( $wgSentryDsn ),
+			'dsn' => $wgSentryDsn ? self::getPublicDsnFromFullDsn( $wgSentryDsn ) : null,
 			'whitelist' => $wgSentryWhitelist,
 			'logOnError' => $wgSentryLogOnError,
 		];
@@ -62,7 +62,7 @@ class SentryHooks {
 	public static function onLogException( $e, $suppressed ) {
 		global $wgSentryDsn, $wgSentryLogPhpErrors;
 
-		if ( !$wgSentryLogPhpErrors || $suppressed ) {
+		if ( !$wgSentryLogPhpErrors || $suppressed || $wgSentryDsn ) {
 			return;
 		}
 
