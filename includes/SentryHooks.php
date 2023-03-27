@@ -62,7 +62,7 @@ class SentryHooks {
 	public static function onLogException( $e, $suppressed ) {
 		global $wgSentryDsn, $wgSentryLogPhpErrors;
 
-		if ( !$wgSentryLogPhpErrors || $suppressed || $wgSentryDsn ) {
+		if ( !$wgSentryLogPhpErrors || $suppressed || !$wgSentryDsn ) {
 			return;
 		}
 
