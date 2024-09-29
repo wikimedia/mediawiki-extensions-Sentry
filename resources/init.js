@@ -56,7 +56,7 @@
 						// hijack the actual sending and POST to EventGate
 						// TODO: this is for beta testing only, we need to implement it properly as
 						//       we work on productionizing
-						eventGateData = $.extend( {}, EVENT_GATE_SHELL, data );
+						eventGateData = Object.assign( {}, EVENT_GATE_SHELL, data );
 
 						// use a flatter format, Sentry's tag syntax doesn't play well with Logstash
 						delete eventGateData.tags;
@@ -121,7 +121,7 @@
 			if ( data.module ) {
 				tags.module = data.module;
 			}
-			$.extend( tags, data.context );
+			Object.assign( tags, data.context );
 
 			raven.captureException( data.exception, { tags: tags } );
 		} );
