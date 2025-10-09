@@ -9,7 +9,6 @@ class SentryHooksTest extends PHPUnit\Framework\TestCase {
 	 */
 	public function testGetPublicDsnFromFullDsn() {
 		$getPublicDsnFromFullDsn = new ReflectionMethod( SentryHooks::class, 'getPublicDsnFromFullDsn' );
-		$getPublicDsnFromFullDsn->setAccessible( true );
 
 		// normal
 		$dsn = 'http://public_key:secret_key@example.com/project-id';
