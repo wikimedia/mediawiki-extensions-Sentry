@@ -7,7 +7,7 @@
 	"license-name": "MIT",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.33.0"
+		"MediaWiki": ">= 1.40.0"
 	},
 	"MessagesDirs": {
 		"Sentry": [
