@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\WikiMap\WikiMap;
 use Wikimedia\Rdbms\DBQueryError;
 
@@ -25,15 +26,16 @@ class SentryHooks {
 	 */
 	public static function onBeforePageDisplay( &$out, &$skin ) {
 		global $wgSentryEventGateUri, $wgSentryDsn;
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
 		$out->addModules( [ 'sentry.init' ] );
 		if ( $wgSentryEventGateUri ) {
-			$parts = wfParseUrl( $wgSentryEventGateUri );
+			$parts = $urlUtils->parse( $wgSentryEventGateUri );
 			if ( $parts && isset( $parts['host'] ) ) {
 				$out->getCSP()->addDefaultSrc( $parts['host'] );
 			}
 		} elseif ( $wgSentryDsn ) {
 			// We only need to allow this if EventGate is not set.
-			$parts = wfParseUrl( self::getPublicDsnFromFullDsn( $wgSentryDsn ) );
+			$parts = $urlUtils->parse( self::getPublicDsnFromFullDsn( $wgSentryDsn ) );
 			if ( $parts && isset( $parts['host'] ) ) {
 				$out->getCSP()->addDefaultSrc( $parts['host'] );
 			}
