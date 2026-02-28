@@ -78,7 +78,6 @@ class SentryHooks {
 				'version' => MW_VERSION,
 			],
 		];
-		/** @phan-suppress-next-line PhanUndeclaredProperty */
 		if ( isset( $e->_mwLogId ) ) {
 			/** @phan-suppress-next-line PhanUndeclaredProperty */
 			$data['event_id'] = $e->_mwLogId;
