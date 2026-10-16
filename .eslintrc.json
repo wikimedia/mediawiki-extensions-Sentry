@@ -13,6 +13,7 @@
 	},
 	"rules": {
 		"no-jquery/no-each-util": "warn",
-		"no-jquery/no-map-util": "warn"
+		"no-jquery/no-map-util": "warn",
+		"no-jquery/no-done-fail": "warn"
 	}
 }
