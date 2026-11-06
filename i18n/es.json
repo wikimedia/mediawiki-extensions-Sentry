@@ -1,8 +1,0 @@
-{
-	"@metadata": {
-		"authors": [
-			"Macofe"
-		]
-	},
-	"sentry-desc": "Proporciona integración con [https://getsentry.com/ Sentry]"
-}

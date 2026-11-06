@@ -1,8 +1,0 @@
-{
-	"@metadata": {
-		"authors": [
-			"Hamilton Abreu"
-		]
-	},
-	"sentry-desc": "Fornece integração com o [https://getsentry.com/ Sentry]"
-}

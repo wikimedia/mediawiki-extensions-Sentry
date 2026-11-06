@@ -1,9 +1,0 @@
-{
-	"@metadata": {
-		"authors": [
-			"Abaddon1337",
-			"Orlodrim"
-		]
-	},
-	"sentry-desc": "Fournit l’intégration de [https://getsentry.com/ Sentry]"
-}

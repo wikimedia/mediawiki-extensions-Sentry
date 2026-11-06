@@ -1,8 +1,0 @@
-{
-	"@metadata": {
-		"authors": [
-			"Okras"
-		]
-	},
-	"sentry-desc": "Обеспечивает интеграцию [https://getsentry.com/ Sentry]"
-}
